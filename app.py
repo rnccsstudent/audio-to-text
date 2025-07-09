@@ -3,6 +3,9 @@ import whisper
 import os
 import tempfile
 
+if not os.system("ffmpeg -version") == 0:
+    st.error("❌ ffmpeg is not installed. Whisper will not work.")
+
 st.set_page_config(page_title="Whisper Audio to Text", layout="centered")
 st.title("🎙️ Whisper Audio-to-Text App")
 
