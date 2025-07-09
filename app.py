@@ -12,7 +12,8 @@ st.title("🎙️ Whisper Audio-to-Text App")
 # Load model once
 @st.cache_resource
 def load_model():
-    return whisper.load_model("small")
+    return whisper.load_model("tiny")
+
 
 model = load_model()
 
