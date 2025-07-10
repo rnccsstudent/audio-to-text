@@ -4,6 +4,8 @@ import os
 import tempfile
 import requests
 
+st.write("App starting...")
+st.write(f"PORT: {os.getenv('PORT')}")
 # ----------------------------
 # ⬇️ Download ffmpeg binary if not already cached
 # ----------------------------
