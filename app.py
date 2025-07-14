@@ -15,6 +15,9 @@ FFMPEG_URL = "https://github.com/rnccsstudent/audio-to-text/releases/download/v1
 FFMPEG_PATH = "/mnt/data/ffmpeg"  # Persistent storage on Render
 
 def setup_ffmpeg():
+    ffmpeg_dir = "/mnt/data"
+    os.makedirs(ffmpeg_dir, exist_ok=True)  # ✅ Make sure the folder exists
+
     if not os.path.exists(FFMPEG_PATH):
         st.info("🔽 Downloading ffmpeg binary for first-time setup...")
         try:
@@ -27,9 +30,10 @@ def setup_ffmpeg():
         except Exception as e:
             st.error(f"❌ Failed to download ffmpeg: {e}")
             st.stop()
-    
-    # Add /mnt/data to PATH
-    os.environ["PATH"] = "/mnt/data" + os.pathsep + os.environ.get("PATH", "")
+
+    # Add to PATH
+    os.environ["PATH"] = ffmpeg_dir + os.pathsep + os.environ.get("PATH", "")
+
 
 setup_ffmpeg()
 
