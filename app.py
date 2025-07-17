@@ -11,12 +11,12 @@ st.title("🎙️ Whisper Audio-to-Text App")
 # ----------------------------
 # 🔧 FFMPEG Setup
 # ----------------------------
-FFMPEG_URL = "https://github.com/rnccsstudent/audio-to-text/releases/download/v1.0.0/ffmpeg"
-FFMPEG_PATH = "/mnt/data/ffmpeg"  # Persistent storage on Render
+# Change this path to a local writable folder
+FFMPEG_DIR = os.path.join(tempfile.gettempdir(), "ffmpeg_bin")
+FFMPEG_PATH = os.path.join(FFMPEG_DIR, "ffmpeg")
 
 def setup_ffmpeg():
-    ffmpeg_dir = "/mnt/data"
-    os.makedirs(ffmpeg_dir, exist_ok=True)  # ✅ Make sure the folder exists
+    os.makedirs(FFMPEG_DIR, exist_ok=True)
 
     if not os.path.exists(FFMPEG_PATH):
         st.info("🔽 Downloading ffmpeg binary for first-time setup...")
@@ -32,7 +32,7 @@ def setup_ffmpeg():
             st.stop()
 
     # Add to PATH
-    os.environ["PATH"] = ffmpeg_dir + os.pathsep + os.environ.get("PATH", "")
+    os.environ["PATH"] = FFMPEG_DIR + os.pathsep + os.environ.get("PATH", "")
 
 
 setup_ffmpeg()
