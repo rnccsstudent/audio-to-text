@@ -2,45 +2,22 @@ import streamlit as st
 import whisper
 import os
 import tempfile
-import requests
 
 # Set Streamlit page config
 st.set_page_config(page_title="Whisper Audio to Text", layout="centered")
 st.title("🎙️ Whisper Audio-to-Text App")
 
 # ----------------------------
-# 🔧 FFMPEG Setup
+# 🔍 Check if FFmpeg is available
 # ----------------------------
-# Change this path to a local writable folder
-FFMPEG_DIR = os.path.join(tempfile.gettempdir(), "ffmpeg_bin")
-FFMPEG_PATH = os.path.join(FFMPEG_DIR, "ffmpeg")
+def check_ffmpeg():
+    if os.system("ffmpeg -version") != 0:
+        st.error("❌ FFmpeg is not available. Please ensure it's installed on the system.")
+        st.stop()
+    else:
+        st.success("✅ FFmpeg is available.")
 
-def setup_ffmpeg():
-    os.makedirs(FFMPEG_DIR, exist_ok=True)
-
-    if not os.path.exists(FFMPEG_PATH):
-        st.info("🔽 Downloading ffmpeg binary for first-time setup...")
-        try:
-            r = requests.get(FFMPEG_URL)
-            r.raise_for_status()
-            with open(FFMPEG_PATH, "wb") as f:
-                f.write(r.content)
-            os.chmod(FFMPEG_PATH, 0o755)  # Make it executable
-            st.success("✅ ffmpeg downloaded and saved successfully.")
-        except Exception as e:
-            st.error(f"❌ Failed to download ffmpeg: {e}")
-            st.stop()
-
-    # Add to PATH
-    os.environ["PATH"] = FFMPEG_DIR + os.pathsep + os.environ.get("PATH", "")
-
-
-setup_ffmpeg()
-
-# Confirm ffmpeg is working
-if os.system("ffmpeg -version") != 0:
-    st.error("❌ FFmpeg not working properly. Please check the binary.")
-    st.stop()
+check_ffmpeg()
 
 # ----------------------------
 # 📦 Load Whisper Model
